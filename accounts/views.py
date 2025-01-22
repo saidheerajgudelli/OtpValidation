@@ -7,9 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import User, TemporaryUser
 from django.contrib.auth.hashers import make_password
-# API view to handle user registration and sending OTP
-
-# checking demo
 
 class RegisterUser(APIView):
     def post(self, request):
@@ -25,9 +22,7 @@ class RegisterUser(APIView):
 
         # Generate OTP
         otp = str(random.randint(100000, 999999))
-        otp_expiry = now() + timedelta(minutes=5)  # OTP valid for 5 minutes
-
-        # Store temporary user data with OTP
+        otp_expiry = now() + timedelta(minutes=5) 
         temp_user, created = TemporaryUser.objects.update_or_create(
             email=email,
             defaults={
@@ -94,16 +89,13 @@ class LoginSendOTP(APIView):
         # Check if the user exists in the database
         user = get_object_or_404(User, email=email)
 
-        # Generate OTP
+        
         otp = str(random.randint(100000, 999999))
-        otp_expiry = now() + timedelta(minutes=5)  # OTP valid for 5 minutes
-
-        # Store OTP in TemporaryUser (update or create record)
+        otp_expiry = now() + timedelta(minutes=5)  
         temp_user, _ = TemporaryUser.objects.update_or_create(
             email=email,
             defaults={'otp': otp, 'otp_created_at': now(), 'otp_expiry': otp_expiry},
         )
-
         # Send OTP via email
         send_mail(
             'Your OTP Code for Login',
@@ -115,7 +107,7 @@ class LoginSendOTP(APIView):
 
         return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
 
-# API view to verify OTP and complete login process
+# API view to verify OTP for login and complete user login
 class VerifyLoginOTP(APIView):
     def post(self, request):
         email = request.data.get('email')

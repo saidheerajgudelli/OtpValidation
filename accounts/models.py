@@ -23,11 +23,11 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
-    full_name = models.CharField(max_length=100, null=True, blank=True)  # Ensure full_name is here
+    full_name = models.CharField(max_length=100, null=True, blank=True)  
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['full_name']  # Make sure full_name is in the REQUIRED_FIELDS
+    REQUIRED_FIELDS = ['full_name']  
 
     def __str__(self):
         return self.email
@@ -41,8 +41,8 @@ class TemporaryUser(models.Model):
     otp = models.CharField(max_length=6)
     otp_created_at = models.DateTimeField(default=now)
     otp_expiry = models.DateTimeField(default=get_otp_expiry)
-    full_name = models.CharField(max_length=100, null=True, blank=True)  # Store full_name temporarily
-    password = models.CharField(max_length=128)  # Save hashed password temporarily
+    full_name = models.CharField(max_length=100, null=True, blank=True) 
+    password = models.CharField(max_length=128) 
 
     def is_otp_valid(self):
         return self.otp_expiry >= now()
