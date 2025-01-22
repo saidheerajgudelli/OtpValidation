@@ -8,6 +8,9 @@ from rest_framework import status
 from .models import User, TemporaryUser
 from django.contrib.auth.hashers import make_password
 
+
+
+
 # API view to handle user registration and sending OTP
 class RegisterUser(APIView):
     def post(self, request):
